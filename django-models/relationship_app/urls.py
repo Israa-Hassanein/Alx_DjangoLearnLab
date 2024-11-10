@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.urls import path
+from .views import list_books, LibraryDetailView  # Import both views directly as required
 from django.urls import path, include
 
 urlpatterns = [
@@ -11,3 +13,4 @@ urlpatterns = [
 urlpatterns = [
     path('relationship_app/', include('relationship_app.urls')),  # Include the app's URLs
 ]
+
