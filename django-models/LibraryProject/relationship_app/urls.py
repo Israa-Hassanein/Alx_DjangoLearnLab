@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('register/', views.register, name='register'),
@@ -23,4 +24,15 @@ urlpatterns = [
     # Add other URL patterns here as needed
      path('admin/', admin.site.urls),
     path('auth/', include('relationship_app.urls')),  # Include auth-related URLs here
+]
+
+urlpatterns = [
+    # User authentication URLs using class-based views
+    path('login/', LoginView.as_view(template_name='login.html'), name='login'),
+    path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
+
+    # Other URL patterns for your app, such as book listing and library details
+    path('books/', views.list_books, name='list_books'),
+    path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
+    # Add more URL patterns as needed
 ]
