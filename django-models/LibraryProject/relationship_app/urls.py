@@ -26,4 +26,6 @@ urlpatterns = [
 
     # Include URL patterns for the 'relationship_app' (if needed)
     path('books/', include('relationship_app.urls')),  # Ensure correct routing if necessary
+    path('add_book/', views.add_book, name='add_book'),  # Ensure this path exists
+    path('edit_book/<int:book_id>/', views.edit_book, name='edit_book'),  # Ensure this path exists
 ]
