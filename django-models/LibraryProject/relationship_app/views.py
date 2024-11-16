@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 # Function-based view for user registration
 def register(request):
@@ -33,3 +34,18 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Registration successful! You can now log in.")
+            return redirect('login')  # Redirect to login page after successful registration
+        else:
+            messages.error(request, "Registration failed. Please check the information provided.")
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'relationship_app/register.html', {'form': form})
