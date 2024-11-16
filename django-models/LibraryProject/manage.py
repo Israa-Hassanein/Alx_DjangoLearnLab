@@ -1,22 +1,28 @@
-#!/usr/bin/env python3
-"""Django's command-line utility for administrative tasks."""
-import os
-import sys
+from django.db import models
 
+class Author(models.Model):
+    name = models.CharField(max_length=100)
 
-def main():
-    """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'LibraryProject.settings')
-    try:
-        from django.core.management import execute_from_command_line
-    except ImportError as exc:
-        raise ImportError(
-            "Couldn't import Django. Are you sure it's installed and "
-            "available on your PYTHONPATH environment variable? Did you "
-            "forget to activate a virtual environment?"
-        ) from exc
-    execute_from_command_line(sys.argv)
+    def __str__(self):
+        return self.name
 
+class Book(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE, related_name='books')
 
-if __name__ == '__main__':
-    main()
+    def __str__(self):
+        return self.title
+
+class Library(models.Model):
+    name = models.CharField(max_length=100)
+    books = models.ManyToManyField(Book, related_name='libraries')
+
+    def __str__(self):
+        return self.name
+
+class Librarian(models.Model):
+    name = models.CharField(max_length=100)
+    library = models.OneToOneField(Library, on_delete=models.CASCADE, related_name='librarian')
+
+    def __str__(self):
+        return self.name

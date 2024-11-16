@@ -17,5 +17,10 @@ from django.contrib import admin
 from django.urls import path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('register/', views.register, name='register'),
+    path('login/', views.user_login, name='login'),
+    path('logout/', views.user_logout, name='logout'),
+    # Add other URL patterns here as needed
+     path('admin/', admin.site.urls),
+    path('auth/', include('relationship_app.urls')),  # Include auth-related URLs here
 ]
