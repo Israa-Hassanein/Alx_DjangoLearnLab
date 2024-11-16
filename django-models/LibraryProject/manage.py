@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User, Permission
+from relationship_app.models import Book
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -26,3 +28,7 @@ class Librarian(models.Model):
 
     def __str__(self):
         return self.name
+
+user = User.objects.get(username='your_user')
+permission = Permission.objects.get(codename='can_add_book')
+user.user_permissions.add(permission)
