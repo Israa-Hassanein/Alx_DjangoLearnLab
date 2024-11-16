@@ -1,33 +1,6 @@
-"""LibraryProject URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
-from django.contrib.auth.views import LoginView, LogoutView
-from . import views
-from django.contrib.auth.views import LoginView, LogoutView
-
-
-urlpatterns = [
-    path('register/', views.register, name='register'),
-    path('login/', views.user_login, name='login'),
-    path('logout/', views.user_logout, name='logout'),
-    # Add other URL patterns here as needed
-     path('admin/', admin.site.urls),
-    path('auth/', include('relationship_app.urls')),  # Include auth-related URLs here
-]
+from django.urls import path, include
+from relationship_app import views
 
 urlpatterns = [
     # User authentication URLs using class-based views
@@ -37,16 +10,20 @@ urlpatterns = [
     # Other URL patterns for your app, such as book listing and library details
     path('books/', views.list_books, name='list_books'),
     path('library/<int:pk>/', views.LibraryDetailView.as_view(), name='library_detail'),
-    # Add more URL patterns as needed
+    
+    # Role-based views
     path('admin/', views.admin_view, name='admin_view'),
     path('librarian/', views.librarian_view, name='librarian_view'),
     path('member/', views.member_view, name='member_view'),
-        path('add/', views.add_book, name='add_book'),
+    
+    # Book management URLs (add, edit, delete)
+    path('add/', views.add_book, name='add_book'),
     path('edit/<int:book_id>/', views.edit_book, name='edit_book'),
     path('delete/<int:book_id>/', views.delete_book, name='delete_book'),
+    
+    # Admin site URL
     path('admin/', admin.site.urls),
-    path('books/', include('relationship_app.urls')),  # Make sure this line exists
+
+    # Include URL patterns for the 'relationship_app' (if needed)
+    path('books/', include('relationship_app.urls')),  # Ensure correct routing if necessary
 ]
-
-
-

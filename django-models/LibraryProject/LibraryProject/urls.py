@@ -23,4 +23,6 @@ urlpatterns = [
     # Add other URL patterns here as needed
      path('admin/', admin.site.urls),
     path('auth/', include('relationship_app.urls')),  # Include auth-related URLs here
+    path('admin/', admin.site.urls),
+    path('books/', include('relationship_app.urls')),  # Ensure this line includes 'relationship_app.urls'
 ]
