@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import permission_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from .models import Book
+from .forms import BookSearchForm
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
@@ -15,3 +16,18 @@ def edit_book(request, pk):
     # Add logic to edit the book
     return HttpResponse(f"Editing book: {book.title}")
 
+
+def book_search(request):
+    query = request.GET.get('query', '')
+    books = Book.objects.filter(title__icontains=query)
+    return render(request, 'bookshelf/book_list.html', {'books': books})
+
+
+def book_search(request):
+    form = BookSearchForm(request.GET)
+    if form.is_valid():
+        query = form.cleaned_data['query']
+        books = Book.objects.filter(title__icontains=query)
+    else:
+        books = Book.objects.none()
+    return render(request, 'bookshelf/book_list.html', {'books': books, 'form': form})

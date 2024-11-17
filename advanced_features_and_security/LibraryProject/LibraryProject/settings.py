@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -133,3 +134,28 @@ INSTALLED_APPS = [
     'bookshelf',
     ...
 ]
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+# Browser-side protections
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Cookies settings for HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# Add your production domain
+ALLOWED_HOSTS = ['']  # Update this with your domain
+
+MIDDLEWARE += [
+    'csp.middleware.CSPMiddleware',
+]
+
+# Basic CSP setup
+CSP_DEFAULT_SRC = ["'self'"]
+CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
+CSP_SCRIPT_SRC = ["'self'"]
+CSP_IMG_SRC = ["'self'", "data:"]
