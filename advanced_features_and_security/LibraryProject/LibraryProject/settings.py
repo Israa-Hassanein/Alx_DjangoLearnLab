@@ -159,3 +159,25 @@ CSP_DEFAULT_SRC = ["'self'"]
 CSP_STYLE_SRC = ["'self'", "'unsafe-inline'"]
 CSP_SCRIPT_SRC = ["'self'"]
 CSP_IMG_SRC = ["'self'", "data:"]
+
+
+# Redirect all HTTP traffic to HTTPS
+SECURE_SSL_REDIRECT = True
+
+# Enforce HSTS policy to ensure all connections are secure
+SECURE_HSTS_SECONDS = 31536000  # Instruct browsers to use HTTPS for the next year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True  # Enable preload for HSTS
+
+# Ensure cookies are sent over secure HTTPS connections only
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# Protect against clickjacking attacks
+X_FRAME_OPTIONS = "DENY"
+
+# Prevent MIME type sniffing
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enable browser's XSS protection filter
+SECURE_BROWSER_XSS_FILTER = True
