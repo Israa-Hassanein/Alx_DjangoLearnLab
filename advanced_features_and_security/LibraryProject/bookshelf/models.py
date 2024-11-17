@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import User
+s
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
@@ -43,3 +44,7 @@ class CustomUserManager(BaseUserManager):
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField()
+
+class CustomUser(AbstractUser):
+    date_of_birth = models.DateField(null=True, blank=True)
+    profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
