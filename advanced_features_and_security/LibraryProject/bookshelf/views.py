@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from .models import Book
 from .forms import BookSearchForm
+from .forms import ExampleForm
 
 @permission_required('bookshelf.can_view', raise_exception=True)
 def book_list(request):
@@ -31,3 +32,7 @@ def book_search(request):
     else:
         books = Book.objects.none()
     return render(request, 'bookshelf/book_list.html', {'books': books, 'form': form})
+
+def example_view(request):
+    form = ExampleForm()
+    return render(request, 'bookshelf/form_example.html', {'form': form})
