@@ -1,0 +1,8 @@
+<h2>Add a New Book</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Book</button>
+    <a href="{% url 'add_book' %}">Add a New Book</a>
+    <a href="{% url 'edit_book' book_id=book.id %}">Edit</a>
+</form>
