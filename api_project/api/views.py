@@ -3,6 +3,8 @@ from .models import Book
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .serializers import BookSerializer
 from .permissions import IsCreatorOrAdmin
+from rest_framework import generics
+
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
@@ -17,3 +19,6 @@ class BookViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("You do not have permission to delete this book.")
         instance.delete()
 
+class BookList(generics.ListAPIView):
+    queryset = Book.objects.all()  # Retrieve all books
+    serializer_class = BookSerializer  # Use the BookSerializer to format the response
