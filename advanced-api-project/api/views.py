@@ -1,6 +1,6 @@
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
-from rest_framework.filters import SearchFilter, OrderingFilter  # Ensure OrderingFilter is imported
+from rest_framework.filters import SearchFilter, OrderingFilter  # Ensure OrderingFilter and SearchFilter are imported
 from django_filters import rest_framework as filters  # Importing DjangoFilterBackend
 from .models import Book
 from .serializers import BookSerializer
@@ -20,8 +20,6 @@ class ListView(generics.ListAPIView):
     # Ordering is enabled by title and publication year, including descending order
 
 
-
-
 class ListView(generics.ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
@@ -38,7 +36,7 @@ class CreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
 class UpdateView(generics.UpdateAPIView):
-    queryset = Book.objects all()
+    queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
 
@@ -48,4 +46,4 @@ class DeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
 
-] # ListView supports filtering by title, author, and publication year # Search is enabled on the title and author fields
+# ListView supports filtering by title, author, and publication year # Search is enabled on the title and author fields
