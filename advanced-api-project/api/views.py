@@ -5,39 +5,45 @@ from .serializers import BookSerializer
 from rest_framework import generics, serializers
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView, DestroyAPIView
 
 
-class BookListView(generics.ListAPIView):
+
+
+
+class ListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]  # Only authenticated users can create
 
-class BookDetailView(generics.RetrieveAPIView):
+class DetailView(RetrieveAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    lookup_field = 'pk'  # This specifies the primary key lookup field
 
-class BookCreateView(generics.CreateAPIView):
+class CreateView(CreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]
     def perform_create(self, serializer):
         # Custom validation: Ensure publication year is not in the future
         if serializer.validated_data['publication_year'] > 2024:
             raise serializers.ValidationError("Publication year cannot be in the future.")
         serializer.save()
 
-class BookUpdateView(generics.UpdateAPIView):
+
+class UpdateView(UpdateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users can update books
+    lookup_field = 'pk'
+    permission_classes = [IsAuthenticated]
     def perform_update(self, serializer):
         # Custom validation: Ensure publication year is not in the future
         if serializer.validated_data['publication_year'] > 2024:
             raise serializers.ValidationError("Publication year cannot be in the future.")
         serializer.save()
 
-class BookDeleteView(generics.DestroyAPIView):
+class DeleteView(DestroyAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users can delete books
+    lookup_field = 'pk'
+    permission_classes = [IsAuthenticated]
