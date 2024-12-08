@@ -10,6 +10,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.urls import reverse_lazy
 from .models import Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import UpdateView
+
 
 
 # Registration view
@@ -72,8 +74,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    template_name = 'blog/post_form.html'
-    fields = ['title', 'content']
+    fields = ['title', 'content']  # Fields to update
+    template_name = 'blog/post_form.html'  # Path to the template
+    success_url = '/'  # Redirect after successful update
 
     def test_func(self):
         post = self.get_object()
