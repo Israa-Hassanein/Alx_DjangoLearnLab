@@ -16,19 +16,24 @@ from django.views.generic import CreateView, UpdateView, DeleteView
 from django.utils.decorators import method_decorator
 from .models import Post, Comment
 from .forms import CommentForm
+from django.views.generic.edit import CreateView
+
 
 class CommentCreateView(CreateView):
     model = Comment
     form_class = CommentForm
-    template_name = 'blog/comment_form.html'
+    template_name = 'blog/comment_post_detail.html'
 
     def form_valid(self, form):
+        # Automatically associate the comment with the correct post and author
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        form.instance.post = post
         form.instance.author = self.request.user
-        form.instance.post = get_object_or_404(Post, id=self.kwargs['post_id'])
         return super().form_valid(form)
 
     def get_success_url(self):
         return self.object.post.get_absolute_url()
+
 
 @method_decorator(login_required, name='dispatch')
 class CommentUpdateView(UpdateView):
