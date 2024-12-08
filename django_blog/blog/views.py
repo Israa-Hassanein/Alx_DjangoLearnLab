@@ -17,6 +17,10 @@ from django.utils.decorators import method_decorator
 from .models import Post, Comment
 from .forms import CommentForm
 from django.views.generic.edit import CreateView
+from django.db.models import Q
+from django.shortcuts import render
+from django.views.generic.list import ListView
+
 
 
 class CommentCreateView(CreateView):
@@ -129,3 +133,21 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
         return post.author == self.request.user
+
+
+def search(request):
+    query = request.GET.get('q')
+    results = Post.objects.filter(
+        Q(title__icontains=query) | Q(content__icontains=query) | Q(tags__name__icontains=query)
+    ).distinct()
+    return render(request, 'blog/search_results.html', {'results': results, 'query': query})
+
+
+
+class TaggedPostListView(ListView):
+    model = Post
+    template_name = 'blog/tagged_posts.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        return Post.objects.filter(tags__name=self.kwargs['tag_name'])

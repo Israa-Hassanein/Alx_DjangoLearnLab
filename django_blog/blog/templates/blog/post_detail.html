@@ -7,4 +7,11 @@
   <p><strong>Created on:</strong> {{ post.created_at }}</p>
   <a href="{% url 'post_update' post.pk %}">Edit</a> |
   <a href="{% url 'post_delete' post.pk %}">Delete</a>
+  <p>Tags: 
+    {% for tag in post.tags.all %}
+        <a href="{% url 'blog:tagged_posts' tag.name %}">{{ tag.name }}</a>
+        {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+</p>
+
 {% endblock %}
