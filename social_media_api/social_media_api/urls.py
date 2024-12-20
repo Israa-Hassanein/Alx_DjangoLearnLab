@@ -21,5 +21,6 @@ from .views import root_view  # type: ignore
 urlpatterns = [
     path('', root_view, name='root'), 
     path('api/accounts/', include('accounts.urls')),
+    path('api/', include('posts.urls')),
 ]
 

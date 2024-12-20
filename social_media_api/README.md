@@ -154,3 +154,18 @@ Feel free to fork the repository and submit pull requests. Contributions are alw
 ## **License**
 This project is licensed under the MIT License.
 
+POST /api/posts/
+{
+    "title": "My first post",
+    "content": "This is the content of the post."
+}
+
+Response:
+{
+    "id": 1,
+    "author": 1,
+    "title": "My first post",
+    "content": "This is the content of the post.",
+    "created_at": "2024-12-20T10:00:00Z",
+    "updated_at": "2024-12-20T10:00:00Z"
+}
