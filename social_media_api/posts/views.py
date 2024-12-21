@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
 from rest_framework.decorators import action
-
+from notifications.models import Notification
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
@@ -17,9 +17,11 @@ class PostViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['post'])
     def like(self, request, pk=None):
-        post = self.get_object()
+        # Ensure generics.get_object_or_404 is used
+        post = generics.get_object_or_404(Post, pk=pk)
         user = request.user
-        like, created = Like.objects.get_or_create(user=user, post=post)
+        like, created = Like.objects.get_or_create(user=user, post=post)  # Use get_or_create
+
         if created:
             # Create a notification
             Notification.objects.create(
