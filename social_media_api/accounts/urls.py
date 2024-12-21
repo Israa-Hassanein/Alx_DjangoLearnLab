@@ -10,7 +10,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('login/', views.LoginView.as_view(), name='login'),
-    path('follow/<int:user_id>/', FollowUserView.as_view(), name='follow_user'),
-    path('unfollow/<int:user_id>/', UnfollowUserView.as_view(), name='unfollow_user'),
+    path('follow/<int:user_id>/', views.FollowUserView.as_view(), name='follow_user'),
+    path('unfollow/<int:user_id>/', views.UnfollowUserView.as_view(), name='unfollow_user'),
+    path('users/', views.ListUsersView.as_view(), name='list_users'),  # Add this route
 ]
 
