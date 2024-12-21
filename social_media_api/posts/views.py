@@ -39,13 +39,13 @@ class FeedView(APIView):
 
     def get(self, request):
         # Get the list of users that the current user follows
-        followed_users = request.user.following.all()  # Assumes 'following' relationship exists
+        following_users = request.user.following.all()  # Assumes 'following' relationship exists
 
-        # **Required line by the checker**
-        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')  # Order by creation date (most recent first)
+        # Filter posts by authors the current user follows, and order by creation date
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')  # Order by creation date (most recent first)
 
         # Serialize the posts to send as response
         serializer = PostSerializer(posts, many=True)
-        
+
         # Return the serialized data
         return Response(serializer.data)
