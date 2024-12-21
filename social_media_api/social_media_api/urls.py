@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.urls import path, include
 from django.contrib import admin
-from .views import root_view  # type: ignore
+from .views import root_view 
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', root_view, name='root'), 
@@ -24,3 +26,6 @@ urlpatterns = [
     path('api/posts', include('posts.urls')),
 ]
 
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

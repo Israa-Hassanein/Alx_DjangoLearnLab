@@ -1,21 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class CustomUser(AbstractUser):
-    # Define related names for follower/followed relationships explicitly
+    bio = models.TextField(blank=True, null=True)  # Allows users to have an optional biography
+    profile_picture = models.ImageField(
+        upload_to="profile_pictures/",  # Directory where profile pictures will be stored
+        blank=True,  # Optional field
+        null=True    # Allows no picture to be uploaded
+    )
     followers = models.ManyToManyField(
         'self',
-        through='CustomUserFollowers',
         symmetrical=False,
-        related_name='following_users'
+        related_name='following'  # Ensures reverse accessor does not clash
     )
-    following = models.ManyToManyField(
-        'self',
-        through='CustomUserFollowing',
-        symmetrical=False,
-        related_name='followers_users'
-    )
+
+    def __str__(self):
+        return self.username
 
 
 class CustomUserFollowers(models.Model):
