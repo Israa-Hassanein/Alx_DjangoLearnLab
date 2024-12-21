@@ -3,7 +3,8 @@ from django.contrib.auth.models import AbstractUser
 
 class CustomUser(AbstractUser):
     bio = models.TextField(blank=True, null=True)  # Allows users to have an optional biography
-    following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
+    '''following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)'''
+    following = models.ManyToManyField('self', symmetrical=False, related_name='followers')
     profile_picture = models.ImageField(
         upload_to="profile_pictures/",  # Directory where profile pictures will be stored
         blank=True,  # Optional field

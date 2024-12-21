@@ -7,6 +7,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.contrib.auth.models import User
 
 # Pagination settings for the post feed
 class PostPagination(PageNumberPagination):
@@ -35,7 +36,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 # Feed view for the current user's posts from the people they follow
 class FeedView(APIView):
-    permission_classes = [IsAuthenticated]  # Ensures that the user is authenticated
+    permission_classes = [IsAuthenticated]  # Ensure that the user is authenticated
 
     def get(self, request):
         # Get the list of users that the current user follows
