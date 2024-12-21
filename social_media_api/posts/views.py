@@ -1,4 +1,3 @@
-# posts/views.py
 from rest_framework import viewsets, permissions
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
