@@ -2,7 +2,6 @@
 from rest_framework import viewsets, permissions
 from .models import Post, Comment
 from .serializers import PostSerializer, CommentSerializer
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
@@ -17,7 +16,7 @@ class PostPagination(PageNumberPagination):
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     pagination_class = PostPagination
     filter_backends = (SearchFilter,)
     search_fields = ['title', 'content']
@@ -29,14 +28,14 @@ class PostViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
 # Feed view for the current user's posts from the people they follow
 class FeedView(APIView):
-    permission_classes = [IsAuthenticated]  # Ensure that the user is authenticated
+    permission_classes = [permissions.IsAuthenticated]  # Ensure that the user is authenticated
 
     def get(self, request):
         # Get the list of users that the current user follows
