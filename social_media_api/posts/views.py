@@ -6,11 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
-from .models import Post
-from django.contrib.auth.models import User
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
-
 
 
 class PostPagination(PageNumberPagination):
@@ -27,7 +23,6 @@ class PostViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
@@ -36,15 +31,18 @@ class CommentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
-
 class FeedView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]  # Ensures that the user is authenticated
 
     def get(self, request):
         # Get the list of users that the current user follows
-        followed_users = request.user.following.all()
-        
-        # Get posts from the followed users, ordered by creation date
-        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')
+        followed_users = request.user.following.all()  # Assuming the 'following' relationship is established
+
+        # Filter posts by users that the current user follows and order by the creation date (latest first)
+        posts = Post.objects.filter(author__in=followed_users).order_by('-created_at')  # Filter posts from followed users
+
+        # Serialize the posts
         serializer = PostSerializer(posts, many=True)
+        
+        # Return the serialized data as a response
         return Response(serializer.data)
