@@ -14,7 +14,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'accounts.CustomUser'
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'accounts',
     'rest_framework.authtoken',
-    'posts'
+    'posts',
 ]
 
 MIDDLEWARE = [
