@@ -1,12 +1,38 @@
 # posts/views.py
-from rest_framework import viewsets, permissions
-from .models import Post, Comment
+from rest_framework import viewsets, permissions, status
+from .models import Post, Comment, Like
 from .serializers import PostSerializer, CommentSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import SearchFilter
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.contrib.auth.models import User
+from rest_framework.decorators import action
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=True, methods=['post'])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        user = request.user
+        like, created = Like.objects.get_or_create(user=user, post=post)
+        if created:
+            # Create a notification
+            Notification.objects.create(
+                recipient=post.author,
+                actor=user,
+                verb='liked your post',
+                target=post
+            )
+            return Response({'status': 'post liked'}, status=status.HTTP_201_CREATED)
+        else:
+            like.delete()
+            return Response({'status': 'post unliked'}, status=status.HTTP_204_NO_CONTENT)
+
 
 # Pagination settings for the post feed
 class PostPagination(PageNumberPagination):

@@ -169,3 +169,19 @@ Response:
     "created_at": "2024-12-20T10:00:00Z",
     "updated_at": "2024-12-20T10:00:00Z"
 }
+
+
+
+# API Documentation
+
+## Like a Post
+**Endpoint:** `/posts/<int:pk>/like/`
+**Method:** `POST`
+**Response:**
+- Status 201: `{'status': 'post liked'}`
+- Status 204: `{'status': 'post unliked'}`
+
+## Fetch Notifications
+**Endpoint:** `/notifications/`
+**Method:** `GET`
+**Response:** List of notifications for the current user.
